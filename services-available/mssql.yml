@@ -9,13 +9,12 @@ networks:
 
 services:
   mssql:
-    image: mcr.microsoft.com/mssql/server:2022-latest
-    # image: mcr.microsoft.com/mssql/server:2019-latest
-    # image: mcr.microsoft.com/mssql/server:2017-latest
+    image: mcr.microsoft.com/mssql/server:${MSSQL_DOCKER_TAG:-2022-latest}
+    user: root # Required for container to correctly interact with the volume.
     container_name: mssql
     restart: unless-stopped
     volumes:
-      #- ./media/databases/mssql:/var/opt/mssql # paths will have to be researched futher
+      - ${MSSQL_DB_DIR:-./media/databases/mssql}:/var/opt/mssql/data # paths will have to be researched futher
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     environment:
